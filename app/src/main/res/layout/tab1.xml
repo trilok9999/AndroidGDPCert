@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollView"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="37dp"
+            android:spinnerMode="dropdown"
+            android:name="Select"
+            android:entries="@array/arrays"
+            android:prompt="@string/prompt"/>
+
+
+
+        <EditText
+            android:layout_width="496dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:hint="Enter the number of remains"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="40dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Select Hazard Type"
+            android:id="@+id/textView2"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="100dp" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Water"
+            android:id="@+id/checkBox"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="-100dp"
+            android:checked="false" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fire"
+            android:id="@+id/checkBox2"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="-110dp"
+            android:checked="false" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Electricity"
+            android:id="@+id/checkBox3"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:layout_marginLeft="-90dp" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Natural"
+            android:id="@+id/checkBox4"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:layout_marginLeft="-100dp" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Others"
+            android:id="@+id/checkBox5"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:layout_marginLeft="-100dp" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enable Location"
+            android:id="@+id/choose"
+            android:layout_marginTop="10dp"
+            android:checked="false"
+            android:layout_marginLeft="80dp"
+            android:onClick="checked" />
+
+        <EditText
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/latitude"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="-100dp"
+            android:hint="Latitude" />
+
+        <EditText
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/longitude"
+            android:layout_gravity="right"
+
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="-45dp"
+            android:hint="Longitude" />
+
+        <!--<EditText-->
+            <!--android:layout_width="500dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/editText2"-->
+            <!--android:layout_marginTop="60dp"-->
+            <!--android:hint="Enter your Location here"-->
+            <!--android:layout_marginLeft="80dp" />-->
+
+        <Button
+            android:id="@+id/btnSelectPhoto"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:text="Select Photo"
+            android:onClick="selectImage"
+            android:layout_gravity="center_horizontal" />
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/download" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/submit"
+            android:layout_gravity="center_horizontal"
+            android:onClick="Submit" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+</ScrollView>
