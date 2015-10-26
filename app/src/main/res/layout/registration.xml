@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/PasswordET"
+        android:id="@+id/Password"
         android:textSize="30sp"
         android:layout_gravity="center_horizontal" />
 
@@ -144,6 +144,22 @@
             android:layout_alignTop="@+id/SignupET"
             android:layout_toRightOf="@+id/SignupET"
             android:layout_toEndOf="@+id/SignupET" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/UploadImage"
+            android:layout_above="@+id/SignupET"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UploadImage"
+            android:id="@+id/ImageButton"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="selectImage2" />
     </RelativeLayout>
 
 
