@@ -13,7 +13,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,19 +23,16 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -52,7 +48,7 @@ public class Registration extends AppCompatActivity {
     private static final int REQUEST_CAMERA = 1;
     private static final int SELECT_FILE = 2;
     Button reset;
-    String https = "http://192.168.0.17:1000/register";
+    String https = "http://192.168.0.14:1000/registerMobi";
     ArrayList<RegistrationPage> registrationPages=new ArrayList<>();
    public EditText firstName,lastName,email;
     EditText password;
@@ -186,20 +182,22 @@ Bitmap bv;
         public void onClick(DialogInterface dialog, int which) {
 //            Toast.makeText(getApplicationContext(), Json, Toast.LENGTH_LONG).show();
             Toast.makeText(getApplicationContext(), selectedImagePath, Toast.LENGTH_LONG).show();
+            new MyAsyncTask().execute();
             finish();
+
         }
     });
-    builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+        builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
                 }
-            }
     );
 
     builder2.show();
 
-new MyAsyncTask().execute();
+
         }
 
     private class MyAsyncTask extends AsyncTask<String,Integer,Double>{
@@ -219,7 +217,7 @@ new MyAsyncTask().execute();
     public void postData(){
 
         try {
-            URL url = new URL(https);
+            URL url = new URL("http://192.168.0.14:1000/registerMobi?fname="+firstName.getText().toString()+"&lname="+lastName.getText().toString()+"&emailid="+email.getText().toString()+"&password="+password.getText().toString());
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -228,72 +226,38 @@ new MyAsyncTask().execute();
             urlConnection.setConnectTimeout(10000);
             urlConnection.setReadTimeout(10000);
             //urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            urlConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary);
-            urlConnection.setRequestProperty("Content-Type","application/json");
-            //Create JSONObject here
-            JSONObject jsonParam = new JSONObject();
-            jsonParam.put("fname", "uihuiidjiojpowdas");
-            jsonParam.put("lname", "y");
-            jsonParam.put("mobile", "6605412788");
-            jsonParam.put("emailid", "trilok@g.com");
-            jsonParam.put("password", "trilok@g.com");
-            jsonParam.put("county", "nodaway");
-            jsonParam.put("bloodgrp", "o+");
-            File file = new File(selectedImagePath);
-            //  File file2=destination;
-            FileInputStream fileInputStream2 = new FileInputStream(file);
-            byte[] bytes = new byte[(int) file.length()];
-            fileInputStream2.read(bytes);
+           // urlConnection.setRequestProperty("Content-Type","application/json");
+            urlConnection.connect();
+//            JSONObject jsonParam = new JSONObject();
+//            jsonParam.put("fname", "uihuiidjiojpowdas");
+//            jsonParam.put("lname", "y");
+//            jsonParam.put("mobile", "6605412788");
+//            jsonParam.put("emailid", "trilok@g.com");
+//            jsonParam.put("password", "trilok@g.com");
+//            jsonParam.put("county", "nodaway");
+//            jsonParam.put("bloodgrp", "o+");
+//            File file = new File(selectedImagePath);
+//            //  File file2=destination;
+//            FileInputStream fileInputStream2 = new FileInputStream(file);
+//            byte[] bytes = new byte[(int) file.length()];
+//            fileInputStream2.read(bytes);
 
-            printout = new DataOutputStream(urlConnection.getOutputStream ());
-            printout.writeChars("fname=trilok");
-            printout.writeBytes(twoHyphens + boundary + lineEnd);
-            printout.writeBytes("Content-Disposition: form-data; name=\"file\"" + lineEnd);
-            printout.writeBytes(lineEnd);
-            printout.writeBytes(lineEnd);
-            printout.writeBytes(twoHyphens + boundary + lineEnd);
-            printout.writeBytes("Content-Disposition: form-data; name=\"file\""+ lineEnd);
-            printout.writeBytes(lineEnd);
-            printout.writeBytes(lineEnd);
-            printout.writeBytes(twoHyphens + boundary + lineEnd);
-            printout.writeBytes("Content-Disposition: form-data; name=\"file\""+ lineEnd);
-            printout.writeBytes(lineEnd);
-            int bytesAvailable = fileInputStream2.available();
-
-            int maxBufferSize = 1024;
-            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-            byte[ ] buffer = new byte[bufferSize];
-
-            // read file and write it into form...
-            int bytesRead = fileInputStream2.read(buffer, 0, bufferSize);
-
-            while (bytesRead > 0)
-            {
-                printout.write(buffer, 0, bufferSize);
-                bytesAvailable = fileInputStream2.available();
-                bufferSize = Math.min(bytesAvailable,maxBufferSize);
-                bytesRead = fileInputStream2.read(buffer, 0,bufferSize);
-            }
-            printout.writeBytes(lineEnd);
-            printout.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-            int serverResponseCode = urlConnection.getResponseCode();
-            String serverResponseMessage = urlConnection.getResponseMessage();
-            Log.i("LOGS", "HTTP Response is : " + serverResponseMessage + ": " + serverResponseCode);
-            printout.flush();
-            printout.close();
-            fileInputStream2.close();
-            printout.flush();
-            fileInputStream2.close();
-            int HttpResult =urlConnection.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK){
+           OutputStreamWriter printout2 = new OutputStreamWriter(urlConnection.getOutputStream ());
+//            String str = jsonParam.toString();
+//            byte[] data=str.getBytes("UTF-8");
+//            printout2.write(str);
+           printout2.flush();
+            printout2.close();
+           int HttpResult =urlConnection.getResponseCode();
+          if(HttpResult ==HttpURLConnection.HTTP_OK){
                 BufferedReader br = new BufferedReader(new InputStreamReader(
                         urlConnection.getInputStream(),"utf-8"));
                 String line = null;
                 while ((line = br.readLine()) != null) {
                     sb.append(line + "\n");
                 }
+                printout2.close();
                 br.close();
-
                 System.out.println(""+sb.toString());
 
             }else{
@@ -306,9 +270,11 @@ new MyAsyncTask().execute();
         catch (IOException e) {
 
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } finally{
+        }
+//        catch (JSONException e) {
+//            e.printStackTrace();
+        //}
+    finally{
             if(urlConnection!=null)
                 urlConnection.disconnect();
         }
