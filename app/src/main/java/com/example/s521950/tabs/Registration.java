@@ -50,7 +50,7 @@ public class Registration extends AppCompatActivity {
     Button reset;
     String https = "http://192.168.0.14:1000/registerMobi";
     ArrayList<RegistrationPage> registrationPages=new ArrayList<>();
-   public EditText firstName,lastName,email;
+   public EditText firstName,lastName,email,mobile,county,bloodgrp;
     EditText password;
 String Json;
     StringBuilder sb = new StringBuilder();
@@ -76,6 +76,9 @@ Bitmap bv;
         firstName=(EditText)findViewById(R.id.FirstNameET);
         email=(EditText)findViewById(R.id.EmailET);
         password=(EditText)findViewById(R.id.Password);
+        mobile=(EditText)findViewById(R.id.Mobile);
+        county=(EditText)findViewById(R.id.CountyName);
+        bloodgrp=(EditText)findViewById(R.id.BloodGroup);
         reset=(Button)findViewById(R.id.ResetET);
 
         reset.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +220,7 @@ Bitmap bv;
     public void postData(){
 
         try {
-            URL url = new URL("http://192.168.0.14:1000/registerMobi?fname="+firstName.getText().toString()+"&lname="+lastName.getText().toString()+"&emailid="+email.getText().toString()+"&password="+password.getText().toString());
+            URL url = new URL("http://192.168.0.13:1000/registerMobi?fname="+firstName.getText().toString()+"&lname="+lastName.getText().toString()+"&emailid="+email.getText().toString()+"&password="+password.getText().toString()+"&mobile="+mobile.getText().toString()+"&county="+county.getText().toString()+"&bloodgrp="+bloodgrp.getText().toString());
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -228,16 +231,8 @@ Bitmap bv;
             //urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
            // urlConnection.setRequestProperty("Content-Type","application/json");
             urlConnection.connect();
-//            JSONObject jsonParam = new JSONObject();
-//            jsonParam.put("fname", "uihuiidjiojpowdas");
-//            jsonParam.put("lname", "y");
-//            jsonParam.put("mobile", "6605412788");
-//            jsonParam.put("emailid", "trilok@g.com");
-//            jsonParam.put("password", "trilok@g.com");
-//            jsonParam.put("county", "nodaway");
-//            jsonParam.put("bloodgrp", "o+");
-//            File file = new File(selectedImagePath);
-//            //  File file2=destination;
+          //  File file = new File(selectedImagePath);
+            // File file2=destination;
 //            FileInputStream fileInputStream2 = new FileInputStream(file);
 //            byte[] bytes = new byte[(int) file.length()];
 //            fileInputStream2.read(bytes);
@@ -246,6 +241,15 @@ Bitmap bv;
 //            String str = jsonParam.toString();
 //            byte[] data=str.getBytes("UTF-8");
 //            printout2.write(str);
+//            MultipartUtility multipart = new MultipartUtility(https, "UTF-8");
+//            multipart.addFilePart("file",file);
+//            List<String> response = multipart.finish();
+//
+//            System.out.println("SERVER REPLIED:");
+//
+//            for (String line : response) {
+//                System.out.println(line);
+//            }
            printout2.flush();
             printout2.close();
            int HttpResult =urlConnection.getResponseCode();

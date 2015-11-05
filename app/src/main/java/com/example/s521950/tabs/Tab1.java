@@ -1,24 +1,15 @@
 package com.example.s521950.tabs;
 
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,19 +17,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Button;
+
 import java.text.DecimalFormat;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 /**
  * Created by Trilok on 10-06-2015.
@@ -48,8 +35,6 @@ public class Tab1 extends Fragment {
      TextView longitude;
     Location location;
     CheckBox fineAcc;
-    double latitudeD;
-    double longitudeD;
     LocationManager locationManager;
 View v;
     private static final int REQUEST_CAMERA = 1;
@@ -73,6 +58,7 @@ View v;
          v = inflater.inflate(R.layout.tab1, container, false);
         Spinner spi = (Spinner) v.findViewById(R.id.spinner);
 b=(Button)v.findViewById(R.id.submit);
+
         b.setOnClickListener(new View.OnClickListener() {
                                  @Override
                                  public void onClick(View view) {
