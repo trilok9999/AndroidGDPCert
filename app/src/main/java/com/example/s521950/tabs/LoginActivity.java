@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     Button button;
     Button Login;
     Toolbar toolbar;
+    public static String EmailId;
     ProgressDialog progressBar;
     private int progressBarStatus = 0;
     private Handler progressBarHandler = new Handler();
@@ -52,13 +55,34 @@ emailid=(EditText)findViewById(R.id.emailET);
     }
 
     public void Login(View v) throws JSONException {
+        TabsActivity ta=new TabsActivity();
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("emailid", emailid.getText().toString());
         jsonObject.put("password", password.getText().toString());
         json = jsonObject.toString();
         System.out.println(json);
         new MyAsyncTask().execute();
-       if (sb.toString().equals(("invalid"))) {
+        String jsonData="{\"success\":true,\"incedents\":[{\"name\":\"1\",\"type\":\"Electricity\",\"groups\":[{\"name\":\"1\",\"members\":[{\"fname\":\"prasanna\",\"lname\":\"k\",\"emailid\":\"d@g.com\",\"mobile\":\"6605412788\",\"county\":\"nod\",\"bloodgrp\":\"O+\",\"userid\":\"f17a7850-697a-11e5-8fe8-d394396cbb51\",\"groupid\":\"a46f0b00-6cfb-11e5-a001-33d59d12e68b\",\"img\":\"./f17a7850-697a-11e5-8fe8-d394396cbb51.jpg\"},{\"fname\":\"virshi\",\"lname\":\"y\",\"emailid\":\"t@g.com\",\"mobile\":\"6605412788\",\"county\":\"nod\",\"bloodgrp\":\"O+\",\"userid\":\"b7a69f80-6c97-11e5-a001-33d59d12e68b\",\"groupid\":\"a46f0b00-6cfb-11e5-a001-33d59d12e68b\",\"img\":\"./b7a69f80-6c97-11e5-a001-33d59d12e68b.jpg\"}],\"groupid\":\"a46f0b00-6cfb-11e5-a001-33d59d12e68b\"}],\"location\":{\"latitude\":90.45,\"longitude\":40.67},\"incedentid\":\"9be29470-6d5a-11e5-a001-33d59d12e68b\",\"status\":\"A\",\"createDate\":\"2015-10-08T01:19:23.447Z\",\"id\":\"9be29470-6d5a-11e5-a001-33d59d12e68b\"},{\"name\":\"\",\"type\":\"\",\"groups\":[],\"location\":{\"latitude\":null,\"longitude\":null},\"incedentid\":\"8951eff0-6d5e-11e5-a001-33d59d12e68b\",\"status\":\"A\",\"createDate\":\"2015-10-08T01:47:30.287Z\",\"id\":\"8951eff0-6d5e-11e5-a001-33d59d12e68b\"},{\"name\":\"Incident 1\",\"type\":\"Electricity\",\"groups\":[{\"name\":\"Group A\",\"members\":[{\"fname\":\"John\",\"lname\":\"Thomson\",\"emailid\":\"John@nw.com\",\"mobile\":\"6605412788\",\"county\":\"Nodaway\",\"bloodgrp\":\"O+\",\"userid\":\"f38d6ab0-7cbe-11e5-8d2e-11d19f7eb880\",\"groupid\":\"ac237c80-7cc0-11e5-8d2e-11d19f7eb880\",\"img\":\"./f38d6ab0-7cbe-11e5-8d2e-11d19f7eb880.jpg\"},{\"fname\":\"Oliver\",\"lname\":\"Queen\",\"emailid\":\"Oliver@nw.com\",\"mobile\":\"6605412788\",\"county\":\"nodaway\",\"bloodgrp\":\"B+\",\"userid\":\"425bd320-7cbf-11e5-8d2e-11d19f7eb880\",\"groupid\":\"ac237c80-7cc0-11e5-8d2e-11d19f7eb880\",\"img\":\"./425bd320-7cbf-11e5-8d2e-11d19f7eb880.jpg\"},{\"fname\":\"Ray\",\"lname\":\"Palmer\",\"emailid\":\"Ray@nw.com\",\"mobile\":\"6605412788\",\"county\":\"Nodaway\",\"bloodgrp\":\"B+\",\"userid\":\"6230ef00-7cbf-11e5-8d2e-11d19f7eb880\",\"groupid\":\"ac237c80-7cc0-11e5-8d2e-11d19f7eb880\",\"img\":\"./6230ef00-7cbf-11e5-8d2e-11d19f7eb880.jpg\"}],\"leader\":{\"userid\":\"f38d6ab0-7cbe-11e5-8d2e-11d19f7eb880\"},\"groupid\":\"ac237c80-7cc0-11e5-8d2e-11d19f7eb880\"}],\"location\":{\"latitude\":40.356,\"longitude\":-94.882},\"incedentid\":\"e18b0e60-7cc0-11e5-8d2e-11d19f7eb880\",\"status\":\"A\",\"createDate\":\"2015-10-27T15:39:16.422Z\",\"id\":\"e18b0e60-7cc0-11e5-8d2e-11d19f7eb880\"},{\"name\":\"Incident 2\",\"type\":\"Tornado\",\"groups\":[{\"name\":\"Group B\",\"members\":[{\"fname\":\"Jessica\",\"lname\":\"Jones\",\"emailid\":\"Jessica@nw.com\",\"mobile\":\"6605412788\",\"county\":\"Nodaway\",\"bloodgrp\":\"O+\",\"userid\":\"24b2bf00-7cbf-11e5-8d2e-11d19f7eb880\",\"groupid\":\"bcce4d30-7cc0-11e5-8d2e-11d19f7eb880\",\"img\":\"./24b2bf00-7cbf-11e5-8d2e-11d19f7eb880.jpg\"},{\"fname\":\"Nickson\",\"lname\":\"Graham\",\"emailid\":\"Nickson@nw.com\",\"mobile\":\"6605412788\",\"county\":\"nodaway\",\"bloodgrp\":\"B+\",\"userid\":\"86478520-7cbf-11e5-8d2e-11d19f7eb880\",\"groupid\":\"bcce4d30-7cc0-11e5-8d2e-11d19f7eb880\",\"img\":\"./86478520-7cbf-11e5-8d2e-11d19f7eb880.jpg\"},{\"fname\":\"Lex\",\"lname\":\"Luther\",\"emailid\":\"Lex@nw.com\",\"mobile\":\"6605412788\",\"county\":\"nodaway\",\"bloodgrp\":\"B+\",\"userid\":\"ab49dad0-7cbf-11e5-8d2e-11d19f7eb880\",\"groupid\":\"bcce4d30-7cc0-11e5-8d2e-11d19f7eb880\",\"img\":\"./ab49dad0-7cbf-11e5-8d2e-11d19f7eb880.jpg\"},{\"fname\":\"Marclum\",\"lname\":\"Merlen\",\"emailid\":\"Marclum@nw.com\",\"mobile\":\"6605412788\",\"county\":\"nodaway\",\"bloodgrp\":\"AB+\",\"userid\":\"cfaedf10-7cbf-11e5-8d2e-11d19f7eb880\",\"groupid\":\"bcce4d30-7cc0-11e5-8d2e-11d19f7eb880\",\"img\":\"./cfaedf10-7cbf-11e5-8d2e-11d19f7eb880.jpg\"}],\"leader\":{\"userid\":\"24b2bf00-7cbf-11e5-8d2e-11d19f7eb880\"},\"groupid\":\"bcce4d30-7cc0-11e5-8d2e-11d19f7eb880\"}],\"location\":{\"latitude\":38.5,\"longitude\":98},\"incedentid\":\"066d31e0-7cc1-11e5-8d2e-11d19f7eb880\",\"status\":\"A\",\"createDate\":\"2015-10-27T15:40:18.302Z\",\"id\":\"066d31e0-7cc1-11e5-8d2e-11d19f7eb880\"}]}";
+        JSONObject jsonObject1=new JSONObject(jsonData);
+        String incidents=jsonObject1.getString("incedents");
+        JSONArray incidentsArray=new JSONArray(incidents);
+        for(int i=0;i<incidentsArray.length();i++){
+            JSONArray array=incidentsArray.getJSONObject(i).getJSONArray("groups");
+            for(int j=0;j<array.length();j++){
+                JSONArray array2=array.getJSONObject(j).getJSONArray("members");
+                for(int k=0;k<array2.length();k++){
+                    JSONObject mem=array2.getJSONObject(k);
+                    Log.i("json",mem.toString());
+                    if(mem.getString("emailid").equals(emailid.getText().toString())){
+                        Log.i("json",mem.toString());
+
+                    }
+                }
+            }
+
+        }
+        if (sb.toString().equals(("invalid"))) {
 
 //            progressBar = new ProgressDialog(v.getContext());
 //            progressBar.setCancelable(true);
@@ -172,6 +196,8 @@ emailid=(EditText)findViewById(R.id.emailET);
                 if (!(sb.toString().equals(("invalid")) || sb.toString().equals(("inactive")))) {
                     Intent tabs = new Intent(getApplicationContext(), TabsActivity.class);
                     startActivity(tabs);
+                    EmailId=emailid.getText().toString();
+                    Log.i("EMAILID",EmailId);
                   sb.delete(0,sb.length());
                 }
                 else{

@@ -120,13 +120,13 @@
             android:layout_marginTop="-45dp"
             android:hint="Longitude" />
 
-        <!--<EditText-->
-            <!--android:layout_width="500dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/editText2"-->
-            <!--android:layout_marginTop="60dp"-->
-            <!--android:hint="Enter your Location here"-->
-            <!--android:layout_marginLeft="80dp" />-->
+        <EditText
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/convertlocation"
+            android:layout_marginTop="60dp"
+            android:hint="Enter your Location here"
+            android:layout_marginLeft="80dp" />
 
         <Button
             android:id="@+id/btnSelectPhoto"

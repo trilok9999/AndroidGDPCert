@@ -9,10 +9,12 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +22,25 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.text.DecimalFormat;
 
 /**
@@ -32,10 +48,18 @@ import java.text.DecimalFormat;
  */
 public class Tab1 extends Fragment {
     TextView latitude;
-     TextView longitude;
+     TextView longitude
+             ;
+    StringBuilder address = new StringBuilder();
+    StringBuilder latitudeBuilder=new StringBuilder();
+    StringBuilder longitudeBuilder=new StringBuilder();
+    StringBuilder getlocation=new StringBuilder();
+    EditText location2;
     Location location;
     CheckBox fineAcc;
+    HttpURLConnection urlConnection2;
     LocationManager locationManager;
+    String key="AIzaSyCesDIicu6f1uErfUNRZdr_iImMIe4WTNs";
 View v;
     private static final int REQUEST_CAMERA = 1;
     private static final int SELECT_FILE = 2;
@@ -58,7 +82,7 @@ View v;
          v = inflater.inflate(R.layout.tab1, container, false);
         Spinner spi = (Spinner) v.findViewById(R.id.spinner);
 b=(Button)v.findViewById(R.id.submit);
-
+location2=(EditText)v.findViewById(R.id.convertlocation);
         b.setOnClickListener(new View.OnClickListener() {
                                  @Override
                                  public void onClick(View view) {
@@ -113,81 +137,143 @@ b=(Button)v.findViewById(R.id.submit);
 fineAcc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(!isChecked){
+        if (!isChecked) {
             latitude.setText("");
             longitude.setText("");
-        }
-    }
-});
-        fineAcc.setOnClickListener(new View.OnClickListener() {
+            location2.setText("");
+            address.delete(0,address.length());
+        } else {
+            fineAcc.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
 
-                latitude = (TextView) v.findViewById(R.id.latitude);
-                longitude = (TextView) v.findViewById(R.id.longitude);
-                if (fineAcc.isChecked()) {
-                    criteria.setAccuracy(Criteria.ACCURACY_FINE);
-                    criteria.setCostAllowed(false);
+                    latitude = (TextView) v.findViewById(R.id.latitude);
+                    longitude = (TextView) v.findViewById(R.id.longitude);
+                    if (fineAcc.isChecked()) {
+                        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+                        criteria.setCostAllowed(false);
 
-                    // get the best provider depending on the criteria
-                    isGPSEnabled = locationManager
-                            .isProviderEnabled(LocationManager.GPS_PROVIDER);
+                        // get the best provider depending on the criteria
+                        isGPSEnabled = locationManager
+                                .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-                    // getting network status
-                    isNetworkEnabled = locationManager
-                            .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-                    provider = locationManager.getBestProvider(criteria, false);
-
-
-                    // the last known location of this provider
+                        // getting network status
+                        isNetworkEnabled = locationManager
+                                .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                        provider = locationManager.getBestProvider(criteria, false);
 
 
-                    try {
-                        location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+                        // the last known location of this provider
 
-                    } catch (SecurityException se) {
 
+                        try {
+                            location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+
+                        } catch (SecurityException se) {
+
+                        }
+                        mylistener = new MyLocationListener();
+
+
+                        if (location != null) {
+
+                            mylistener.onLocationChanged(location);
+
+                        } else {
+
+                            // leads to the settings because there is no last known location
+
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+
+                            startActivity(intent);
+
+                        }
+
+                        // location updates: at least 1 meter and 200millsecs change
+                        try {
+                            locationManager.requestLocationUpdates(provider, 200, 1, mylistener);
+
+                        } catch (SecurityException se2) {
+
+                        }
                     }
-                    mylistener = new MyLocationListener();
 
 
-                    if (location != null) {
-
-                        mylistener.onLocationChanged(location);
-
-                    } else {
-
-                        // leads to the settings because there is no last known location
-
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-
-                        startActivity(intent);
-
-                    }
-
-                    // location updates: at least 1 meter and 200millsecs change
-                    try {
-                        locationManager.requestLocationUpdates(provider, 200, 1, mylistener);
-                    } catch (SecurityException se2) {
-
-                    }
                 }
 
 
-            }
+            });
+        }
+    }
+});
 
-
-        });
 
 
 
         return v;
     }
 
+    private class MyAsyncTask extends AsyncTask<String,Integer,Double> {
+        @Override
+        protected Double doInBackground(String... params) {
+            mapsData();
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(Double aDouble){
+            try {
+
+                JSONObject object = new JSONObject(getlocation.toString());
+                JSONArray jsonArray = object.getJSONArray("results");
+                address.append(jsonArray.getJSONObject(1).optString("name") + "," + jsonArray.getJSONObject(1).optString("vicinity"));
+                Log.i("gmapsAdress", address.toString());
+                System.out.println("trilok" + address.toString());
+                location2.setText(address.toString());
+                super.onPostExecute(aDouble);
+            }
+            catch(JSONException je){
+
+            }
+        }
+    }
+    public void mapsData(){
+        try {
+            URL url2 = new URL("https://maps.googleapis.com/maps/api/place/search/json?location="+ latitudeBuilder.toString()+","+longitudeBuilder.toString()+"&radius=100&sensor=true&key="+key);
+            urlConnection2 = (HttpURLConnection) url2.openConnection();
+            urlConnection2.setDoInput(true);
+            urlConnection2.setRequestMethod("GET");
+            urlConnection2.setUseCaches(false);
+            urlConnection2.setConnectTimeout(10000);
+            urlConnection2.setReadTimeout(10000);
+            urlConnection2.connect();
+            InputStream is2= urlConnection2.getInputStream();
+            BufferedReader Reader2 = new BufferedReader(
+                    new InputStreamReader(is2, "UTF-8"));
+            String input2="";
+            while((input2=Reader2.readLine())!=null){
+//                System.out.println(input);
+//                Log.i("MapsAPi",input);
+                getlocation.append(input2);
+
+            }
+
+            Reader2.close();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
     public double roundTwoDecimals(double d) {
-        DecimalFormat twoDForm = new DecimalFormat("#.###");
+        DecimalFormat twoDForm = new DecimalFormat("#.####");
         return Double.valueOf(twoDForm.format(d));
     }
     public class MyLocationListener implements LocationListener {
@@ -203,6 +289,9 @@ fineAcc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() 
             latitude.setText("Latitude: "+String.valueOf(roundTwoDecimals(lat)));
 
             longitude.setText("Longitude: "+String.valueOf(roundTwoDecimals(lon)));
+            latitudeBuilder.append(String.valueOf(roundTwoDecimals(lat)));
+            longitudeBuilder.append(String.valueOf(roundTwoDecimals(lon)));
+            new MyAsyncTask().execute();
 
         }
 

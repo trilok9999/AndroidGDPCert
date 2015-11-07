@@ -7,29 +7,23 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-
-import android.app.FragmentTransaction;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 public class TabsActivity extends ActionBarActivity {
 
     private static final int REQUEST_CAMERA = 1;
@@ -84,7 +78,6 @@ public class TabsActivity extends ActionBarActivity {
 
     public void selectImage(View v) {
         ivImage=(ImageView)findViewById(R.id.ivImage);
-
         btn=(Button)findViewById(R.id.btnSelectPhoto);
         final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
         AlertDialog.Builder builder = new AlertDialog.Builder(TabsActivity.this);
