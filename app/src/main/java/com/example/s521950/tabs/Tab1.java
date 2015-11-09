@@ -33,9 +33,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -50,21 +53,28 @@ public class Tab1 extends Fragment {
     TextView latitude;
      TextView longitude
              ;
+    StringBuilder sb=new StringBuilder();
+    String json;
+    HttpURLConnection urlConnection;
+    Tab2 tab2;
+    Button submit;
     StringBuilder address = new StringBuilder();
     StringBuilder latitudeBuilder=new StringBuilder();
     StringBuilder longitudeBuilder=new StringBuilder();
     StringBuilder getlocation=new StringBuilder();
-    EditText location2;
+    EditText location2,remains;
     Location location;
     CheckBox fineAcc;
     HttpURLConnection urlConnection2;
     LocationManager locationManager;
-    String key="AIzaSyCesDIicu6f1uErfUNRZdr_iImMIe4WTNs";
+    StringBuilder severity=new StringBuilder();
+    String key="AIzaSyBa5i8jJnXcDB2khD0KwYoJZG0xGAqyBJY";
 View v;
     private static final int REQUEST_CAMERA = 1;
     private static final int SELECT_FILE = 2;
     Button b;
     Button image;
+    Spinner spi;
     boolean isGPSEnabled = false;
     ImageView ivImage;
 
@@ -79,9 +89,13 @@ View v;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        tab2=new Tab2();
          v = inflater.inflate(R.layout.tab1, container, false);
-        Spinner spi = (Spinner) v.findViewById(R.id.spinner);
+         spi = (Spinner) v.findViewById(R.id.spinner);
+        remains=(EditText)v.findViewById(R.id.remains);
 b=(Button)v.findViewById(R.id.submit);
+
+        StringBuilder type=new StringBuilder();
 location2=(EditText)v.findViewById(R.id.convertlocation);
         b.setOnClickListener(new View.OnClickListener() {
                                  @Override
@@ -91,7 +105,7 @@ location2=(EditText)v.findViewById(R.id.convertlocation);
                                      builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                          @Override
                                          public void onClick(DialogInterface dialog, int which) {
-
+                                             new PostAsyncTask().execute();
 
                                              Toast.makeText(getContext(), "submitted", Toast.LENGTH_LONG).show();
                                          }
@@ -116,6 +130,7 @@ location2=(EditText)v.findViewById(R.id.convertlocation);
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (!parent.getSelectedItem().equals("Select severity of damage"))
                     Toast.makeText(parent.getContext(), "" + parent.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+                severity.append(parent.getSelectedItem().toString());
             }
 
             @Override
@@ -213,11 +228,29 @@ fineAcc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() 
 
         return v;
     }
+    private class PostAsyncTask extends AsyncTask<String,Integer,Double> {
+        @Override
+        protected Double doInBackground(String... params) {
+            postData();
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(Double aDouble) {
+            spi.setSelection(0);
+            remains.setText("");
+            longitude.setText("");
+            latitude.setText("");
+            super.onPostExecute(aDouble);
+        }
+    }
 
     private class MyAsyncTask extends AsyncTask<String,Integer,Double> {
         @Override
         protected Double doInBackground(String... params) {
             mapsData();
+
             return null;
         }
 
@@ -231,6 +264,15 @@ fineAcc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() 
                 Log.i("gmapsAdress", address.toString());
                 System.out.println("trilok" + address.toString());
                 location2.setText(address.toString());
+                JSONObject report = new JSONObject();
+                report.put("userid", tab2.UserID);
+                report.put("groupid", tab2.GroupId);
+                report.put("latitude", latitudeBuilder.toString());
+                report.put("longitude", longitudeBuilder.toString());
+                severity.delete(0,25);
+                report.put("severity", severity.toString());
+                report.put("remains", remains.getText().toString());
+                json = report.toString();
                 super.onPostExecute(aDouble);
             }
             catch(JSONException je){
@@ -283,15 +325,25 @@ fineAcc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() 
 
             double lat=location.getLatitude();
             double lon=location.getLongitude();
-
             latitude = (TextView) v.findViewById(R.id.latitude);
             longitude = (TextView) v.findViewById(R.id.longitude);
-            latitude.setText("Latitude: "+String.valueOf(roundTwoDecimals(lat)));
+            longitudeBuilder.delete(0,longitudeBuilder.length());
+            latitudeBuilder.delete(0,latitudeBuilder.length());
+            if(fineAcc.isChecked()) {
 
-            longitude.setText("Longitude: "+String.valueOf(roundTwoDecimals(lon)));
-            latitudeBuilder.append(String.valueOf(roundTwoDecimals(lat)));
-            longitudeBuilder.append(String.valueOf(roundTwoDecimals(lon)));
-            new MyAsyncTask().execute();
+                latitude.setText("Latitude: " + String.valueOf(roundTwoDecimals(lat)));
+                longitude.setText("Longitude: " + String.valueOf(roundTwoDecimals(lon)));
+                if(address.length()==0) {
+                    latitudeBuilder.append(String.valueOf(roundTwoDecimals(lat)));
+                    longitudeBuilder.append(String.valueOf(roundTwoDecimals(lon)));
+                    new MyAsyncTask().execute();
+                }
+            }
+            else{
+                longitudeBuilder.delete(0,longitudeBuilder.length());
+                latitudeBuilder.delete(0,latitudeBuilder.length());
+                address.delete(0,address.length());
+            }
 
         }
 
@@ -317,6 +369,59 @@ fineAcc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() 
 
         }
     }
+    public void postData(){
+
+        try {
+            URL url = new URL("http://192.168.0.13:1000/memberReports");
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setUseCaches(false);
+            urlConnection.setConnectTimeout(10000);
+            urlConnection.setReadTimeout(10000);
+            // urlConnection.setRequestProperty("Content-Type","application/json");
+            urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+            // urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(json);
+            writer.flush();
+            writer.close();
+            urlConnection.connect();
+severity.delete(0,severity.length());
+
+            int HttpResult =urlConnection.getResponseCode();
+            System.out.println(HttpResult);
+            if(HttpResult ==HttpURLConnection.HTTP_OK){
+                BufferedReader br = new BufferedReader(new InputStreamReader(
+                        urlConnection.getInputStream(),"utf-8"));
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                br.close();
+                System.out.println(sb.toString());
+
+            }else{
+                System.out.println(urlConnection.getResponseMessage());
+            }
+        } catch (MalformedURLException e) {
+
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+        finally{
+            if(urlConnection!=null)
+                urlConnection.disconnect();
+        }
+    }
+
 
 
 }

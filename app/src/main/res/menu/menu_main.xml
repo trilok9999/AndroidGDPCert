@@ -4,4 +4,9 @@
     tools:context="com.example.s521950.tabs.MainActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/logout"
+        android:title="logout"
+        android:orderInCategory="100"
+        app:showAsAction="always">
+    </item>
 </menu>

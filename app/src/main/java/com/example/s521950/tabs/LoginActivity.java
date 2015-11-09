@@ -1,5 +1,6 @@
 package com.example.s521950.tabs;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,12 +34,16 @@ import java.net.URL;
 public class LoginActivity extends AppCompatActivity {
     Button button;
     Button Login;
+    AlertDialog.Builder al;
     Toolbar toolbar;
     public static String EmailId;
     ProgressDialog progressBar;
     private int progressBarStatus = 0;
     private Handler progressBarHandler = new Handler();
 EditText emailid,password;
+    TextView errorText;
+    ImageView errorImage;
+    StringBuilder temp=new StringBuilder();
     HttpURLConnection urlConnection;
     private long fileSize = 0;
 String json;
@@ -47,6 +54,8 @@ String json;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 emailid=(EditText)findViewById(R.id.emailET);
+        errorText=(TextView)findViewById(R.id.errorText);
+        errorImage=(ImageView)findViewById(R.id.errorImage);
         password=(EditText)findViewById(R.id.passwordET);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,7 +91,8 @@ emailid=(EditText)findViewById(R.id.emailET);
             }
 
         }
-        if (sb.toString().equals(("invalid"))) {
+        if (sb.toString().equals(("invalid")) || sb.toString().equals("inactive")) {
+
 
 //            progressBar = new ProgressDialog(v.getContext());
 //            progressBar.setCancelable(true);
@@ -155,7 +165,24 @@ emailid=(EditText)findViewById(R.id.emailET);
 
         @Override
         protected void onPostExecute(Double aDouble) {
+           if ((temp.toString().contains(("invalid")) || temp.toString().contains(("inactive")))&&(!temp.toString().contains("fname"))) {
 
+//   al=new AlertDialog.Builder(LoginActivity.this);
+//              // al.setIcon(R.drawable.home);
+//al.setView(R.layout.custom_dialog);
+//    al.setMessage("Login Failed. Please Try Again");
+//    al.create().show();
+               errorImage.setImageResource(R.drawable.error);
+               errorText.setText("log in failed");
+               emailid.setText("");
+               password.setText("");
+               emailid.setFocusable(true);
+           } else{
+               errorImage.setImageResource(0);
+               errorText.setText("");
+
+               temp.delete(0,temp.length());
+           }
             super.onPostExecute(aDouble);
         }
     }
@@ -197,10 +224,13 @@ emailid=(EditText)findViewById(R.id.emailET);
                     Intent tabs = new Intent(getApplicationContext(), TabsActivity.class);
                     startActivity(tabs);
                     EmailId=emailid.getText().toString();
-                    Log.i("EMAILID",EmailId);
-                  sb.delete(0,sb.length());
+                    Log.i("EMAILID", EmailId);
+                    temp.append(sb.toString());
+                  sb.delete(0, sb.length());
+
                 }
                 else{
+                    temp.append(sb.toString());
                     sb.delete(0, sb.length());
 
                 }
@@ -234,7 +264,7 @@ public void Register(View v){
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
     public int doSomeTasks() {

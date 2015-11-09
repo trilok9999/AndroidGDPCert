@@ -97,6 +97,30 @@
         android:layout_centerHorizontal="true"
         android:onClick="Register" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/errorText"
+        android:layout_below="@+id/passwordET"
+        android:layout_alignParentStart="true"
+        android:textColor="#c91e1e"
+        android:textStyle="bold"
+        android:textSize="25dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/errorImage"
+        android:layout_marginTop="11dp"
+        android:layout_marginLeft="80dp"
+        android:layout_alignTop="@+id/errorText"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
 
 </ScrollView>

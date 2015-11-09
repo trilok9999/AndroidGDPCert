@@ -33,7 +33,7 @@
         <EditText
             android:layout_width="496dp"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
+            android:id="@+id/remains"
             android:hint="Enter the number of remains"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="40dp" />
@@ -150,6 +150,7 @@
             android:layout_height="wrap_content"
             android:text="Submit"
             android:id="@+id/submit"
+
             android:layout_gravity="center_horizontal"
             android:onClick="Submit" />
 
