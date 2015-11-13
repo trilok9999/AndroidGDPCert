@@ -3,12 +3,14 @@ package com.example.s521950.tabs;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,8 +53,22 @@ String json;
     StringBuilder sb=new StringBuilder();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        Log.i("width",""+width);
+        Log.i("Height", "" + height);
+        if(width==800&&height>1200) {
+            setContentView(R.layout.login);
+        }
+        else{
+            setContentView(R.layout.login_mobile);
+        }
+
 emailid=(EditText)findViewById(R.id.emailET);
         errorText=(TextView)findViewById(R.id.errorText);
         errorImage=(ImageView)findViewById(R.id.errorImage);
@@ -94,17 +110,7 @@ emailid=(EditText)findViewById(R.id.emailET);
         if (sb.toString().equals(("invalid")) || sb.toString().equals("inactive")) {
 
 
-//            progressBar = new ProgressDialog(v.getContext());
-//            progressBar.setCancelable(true);
-//            progressBar.setMessage("Logging in ...");
-//
-//            progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//            progressBar.setProgress(0);
-//            progressBar.setMax(100);
-//            progressBar.show();
-//
-//            //reset progress bar status
-//            progressBarStatus = 0;
+
 //
 //            //reset filesize
 //            fileSize = 0;
@@ -156,6 +162,21 @@ emailid=(EditText)findViewById(R.id.emailET);
     }
 
     private class MyAsyncTask extends AsyncTask<String,Integer,Double> {
+        @Override
+        protected void onPreExecute() {
+                        progressBar = new ProgressDialog(LoginActivity.this);
+            progressBar.setCancelable(true);
+            progressBar.setMessage("Logging in ...");
+
+            progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressBar.setProgress(0);
+            progressBar.setMax(100);
+            progressBar.show();
+
+            //reset progress bar status
+//            progressBarStatus = 0;
+            super.onPreExecute();
+        }
 
         @Override
         protected Double doInBackground(String... params) {
@@ -183,13 +204,14 @@ emailid=(EditText)findViewById(R.id.emailET);
 
                temp.delete(0,temp.length());
            }
+            progressBar.dismiss();
             super.onPostExecute(aDouble);
         }
     }
     public void postData(){
 
         try {
-            URL url = new URL("http://192.168.0.13:1000/login");
+            URL url = new URL("http://csgrad07.nwmissouri.edu:3000/login");
            urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);

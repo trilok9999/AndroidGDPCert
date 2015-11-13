@@ -186,4 +186,18 @@ if(id==R.id.logout){
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder al=new AlertDialog.Builder(this);
+        al.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent loginscreen = new Intent(TabsActivity.this, LoginActivity.class);
+                loginscreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(loginscreen);
+                finish();
+            }
+        });
+
+    }
 }

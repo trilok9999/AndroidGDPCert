@@ -8,7 +8,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="200dp"
         android:layout_height="440dp"
-        android:id="@+id/cvNoteam"
+        android:id="@+id/cvNoincident"
         card_view:cardCornerRadius="8dp"
         card_view:cardUseCompatPadding="true"
         card_view:cardElevation="4dp"
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="               Team Details"
+            android:text="               You are currently assigned to"
             android:background="#76c945"
             android:id="@+id/Heading2"
             android:layout_alignParentTop="true"
@@ -33,8 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="You are currently not assigned to any of the teams"
-            android:id="@+id/textView14"
+            android:text="You are currently not assigned to any of the incident"
+            android:id="@+id/noincidentText"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="95dp"
@@ -45,3 +45,4 @@
 
 
 </RelativeLayout>
+

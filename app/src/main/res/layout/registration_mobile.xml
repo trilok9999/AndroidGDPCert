@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/scrollView"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/scrollView"
+android:orientation="vertical"
+xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
 
 <LinearLayout
+
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
@@ -21,24 +24,20 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Join CERT today."
-        android:textSize="36dp"
+        android:textSize="24dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/textView8"
         android:textColor="@color/abc_primary_text_disable_only_material_light" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView9" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="FirstName"
-        android:textSize="24dp"
-        android:id="@+id/textView3" />
+        android:textSize="18dp"
+        android:id="@+id/textView3"
+        />
 
     <EditText
         android:layout_width="match_parent"
@@ -46,14 +45,14 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/FirstNameET"
-        android:textSize="24sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="LastName"
-        android:textSize="24dp"
+        android:textSize="18dp"
         android:id="@+id/textView4" />
 
     <EditText
@@ -62,14 +61,14 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/LastNameET"
-        android:textSize="24sp" />
+        android:textSize="18sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Choose your Email or Username"
-        android:textSize="24dp"
+        android:textSize="18dp"
         android:id="@+id/textView5" />
 
     <EditText
@@ -78,15 +77,14 @@
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/EmailET"
-        android:textSize="24sp" />
-
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Create a password"
-        android:textSize="24dp"
+        android:textSize="18dp"
         android:id="@+id/textView6" />
 
     <EditText
@@ -95,7 +93,7 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/Password"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:layout_gravity="center_horizontal" />
 
     <TextView
@@ -103,23 +101,24 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Confirm your password"
-        android:textSize="24dp"
+        android:textSize="18dp"
         android:id="@+id/textView7" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:ems="10"
         android:id="@+id/CPasswordET"
         android:layout_gravity="center_horizontal" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Mobile"
-        android:textSize="24dp"
+        android:textSize="18dp"
         android:id="@+id/textView10" />
 
     <EditText
@@ -134,13 +133,13 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="County Name"
-        android:textSize="24dp"
+        android:textSize="18dp"
         android:id="@+id/textView11" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:id="@+id/CountyName" />
 
     <TextView
@@ -148,14 +147,16 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Blood Type"
-        android:textSize="24dp"
+        android:textSize="18dp"
         android:id="@+id/textView12" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:id="@+id/BloodGroup" />
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -166,7 +167,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="UploadImage"
-            android:textSize="24dp"
+            android:textSize="12dp"
             android:id="@+id/ImageButton"
             android:onClick="selectImage2"
             android:layout_alignParentTop="true"
@@ -183,7 +184,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Sign Up"
-            android:textSize="24dp"
+            android:textSize="12dp"
             android:id="@+id/SignupET"
             android:onClick="Signup"
             android:layout_alignParentBottom="true"
@@ -194,7 +195,7 @@
             android:layout_height="wrap_content"
             android:text="Reset"
             android:id="@+id/ResetET"
-            android:textSize="24dp"
+            android:textSize="12dp"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/ImageButton" />
 
