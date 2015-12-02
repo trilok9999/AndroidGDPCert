@@ -146,11 +146,11 @@ b=(Button)v.findViewById(R.id.submit);
                 }
                 else if(checkedId==R.id.neutral){
                     type.delete(0,type.length());
-                    type.append("Natural");
+                    type.append("Tornado");
                 }
                 else if(checkedId==R.id.others){
                     type.delete(0,type.length());
-                    type.append("Others");
+                    type.append("Collapsed Building");
                 }
             }
         });
@@ -459,8 +459,8 @@ fineAcc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() 
                     longitudeBuilder.append(String.valueOf(roundTwoDecimals(lon)));
                     new MyAsyncTask().execute();
                 }
-                else
-                    address.delete(0,address.length());
+//                else
+//                    address.delete(0,address.length());
             }
             else{
                 longitudeBuilder.delete(0,longitudeBuilder.length());

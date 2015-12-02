@@ -41,6 +41,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by S521950.
@@ -77,7 +78,7 @@ public class Tab2 extends Fragment {
     StringBuilder sb = new StringBuilder();
     StringBuilder incidentName = new StringBuilder();
     StringBuilder dateBuilder = new StringBuilder();
-
+static HashMap<String,String> memNames=new HashMap<>();
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -832,7 +833,7 @@ public class Tab2 extends Fragment {
                         for (int k = 0; k < array2.length(); k++) {
 
                             JSONObject mem = array2.getJSONObject(k);
-
+                            memNames.put(mem.getString("userid"),mem.getString("fname")+" "+mem.getString("lname"));
                             if (mem.getString("emailid").equals(LoginActivity.EmailId)) {
                                 UserID = mem.getString("userid");
                                 GroupId = mem.getString("groupid");
@@ -844,6 +845,7 @@ public class Tab2 extends Fragment {
                                 String year = formatedDateArray[0];
                                 String month = formatedDateArray[1];
                                 String day = formatedDateArray[2];
+
                                 teamNameBuilder.append(incidentsArray.getJSONObject(i).getJSONArray("groups").getJSONObject(j).getString("name"));
                                 TeamBuilder.append(incidentsArray.getJSONObject(i).getString("type"));
                                 IncidentID = incidentsArray.getJSONObject(i).getString("incedentid");
@@ -881,7 +883,7 @@ public class Tab2 extends Fragment {
 
         public void mapsData() throws JSONException {
             try {
-                URL url2 = new URL("https://maps.googleapis.com/maps/api/place/search/json?location=" + latitudeBuilder.toString() + "," + longitudeBuilder.toString() + "&radius=100&sensor=true&key=" + key);
+                URL url2 = new URL("https://maps.googleapis.com/maps/api/place/search/json?location=" + latitudeBuilder.toString() + "," + longitudeBuilder.toString() + "&radius=10&sensor=true&key=" + key);
                 urlConnection2 = (HttpURLConnection) url2.openConnection();
                 urlConnection2.setDoInput(true);
                 urlConnection2.setRequestMethod("GET");
@@ -895,7 +897,7 @@ public class Tab2 extends Fragment {
                 String input2 = "";
                 while ((input2 = Reader2.readLine()) != null) {
                     loc.append(input2);
-                    //System.out.println("location:"+loc.toString());
+                    System.out.println("location:"+loc.toString()+"tabs2");
 
                 }
                 int statuscode = urlConnection2.getResponseCode();
@@ -905,14 +907,14 @@ public class Tab2 extends Fragment {
                 try {
                     object = new JSONObject(loc.toString());
                     jsonArray = object.getJSONArray("results");
-                    address.append(jsonArray.getJSONObject(1).optString("name") + "," + jsonArray.getJSONObject(1).optString("vicinity"));
+                    address.append(jsonArray.getJSONObject(0).optString("name") + "," + jsonArray.getJSONObject(0).optString("vicinity"));
                 } catch (JSONException e) {
                     System.out.println("catch block executed");
 
                 } finally {
-                    object = new JSONObject(loc.toString());
-                    jsonArray = object.getJSONArray("results");
-                    address.append(jsonArray.getJSONObject(0).optString("name") + "," + jsonArray.getJSONObject(0).optString("vicinity"));
+//                    object = new JSONObject(loc.toString());
+//                    jsonArray = object.getJSONArray("results");
+//                    address.append(jsonArray.getJSONObject(0).optString("name") + "," + jsonArray.getJSONObject(0).optString("vicinity"));
                 }
 
                 Log.i("gmapsAdress", address.toString());
@@ -950,7 +952,7 @@ public class Tab2 extends Fragment {
             protected void onPostExecute(Double aDouble) {
                 super.onPostExecute(aDouble);
                 location.setText(address.toString());
-                //System.out.println(loc.toString());
+
 
 
             }
